@@ -1,0 +1,46 @@
+Q1. Which two operator overloading methods can you use in your classes to support iteration?
+
+The __iter__ returns the iterator object and is implicitly called at the start of loops. The __next__ method returns the next value and is implicitly called at each loop increment. __next__ raises a StopIteration exception when there are no more value to return
+
+
+Q2. In what contexts do the two operator overloading methods manage printing?
+
+The str() built-in is used to cast an instance of a class to a str object, or more appropriately, to obtain a user-friendly string representation of the object which can be read by a normal user rather than the programmer. You can define the string format your object should be displayed in when passed to str() by defining the __str__() method in your class. Moreover, __str__() is the method that is used by Python when you call print() on your object.
+
+Q3. In a class, how do you intercept slice operations?
+
+      import profile
+import sys
+
+print sys.version
+
+class InterceptedList(list):
+
+    def addSave(func):
+        def newfunc(self, *args):
+            func(self, *args)
+            print 'saving'
+        return newfunc
+
+    __setslice__ = addSave(list.__setslice__)
+    __delslice__ = addSave(list.__delslice__)
+
+
+class InterceptedList2(list):
+
+    def __setitem__(self, key, value):
+        print 'saving'
+        list.__setitem__(self, key, value)
+
+    def __delitem__(self, key):
+        print 'saving'
+        list.__delitem__(self, key)
+
+
+Q4. In a class, how do you capture in-place addition?
+
+	X=+y
+
+Q5. When is it appropriate to use operator overloading?
+
+	Operator overloading is mostly useful when you're making a new class that falls into an existing "Abstract Base Class" (ABC) -- indeed, many of the ABCs in standard library module collections rely on the presence of certain special methods (and special methods, one with names starting and ending with double underscores AKA "dunders", are exactly the way you perform operator overloading in Python). This provides good starting guidance.
